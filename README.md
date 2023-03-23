@@ -1,16 +1,16 @@
 # Personal project on DevSecOps pipeline setup in AWS
 
 ## Below architecture has all the tools used for this project . 
-I am are going to build the below CI/CD Pipeline in AWS by using AWS native developer tools such as AWS CodePipeline, AWS CodeBuild.
+I am are going to build the below CI/CD Pipeline in AWS by using AWS native developer tools such as 
 
 ![](./images/AWS_DEVSECOPS_1.png)
 
-Before This as a breif description about What is DevSecOps?
+Before this as a breif description about what is DevSecOps?
 DevOps is a combination of cultural philosophies, practices, and tools that combine software development with information technology operations. These combined practices enable companies to deliver new application features and improved services to customers at a higher velocity.
 ![](./images/AWS_DEV_2.png)
 
 
-Security Vulnerability Scanning Stages
+## Security Vulnerability Scanning Stages
 To identify security vulnerabilities at various stages, organisations can integrate various tools and services (cloud and third-party) into their DevSecOps pipelines. 
 1.Secret Analysis
 Secrets Scanning refers to the process of identifying secrets embedded in code repositories . Some examples of secrets scanning tools are — Git-secrets, Trufflehog, detect-secrets.
