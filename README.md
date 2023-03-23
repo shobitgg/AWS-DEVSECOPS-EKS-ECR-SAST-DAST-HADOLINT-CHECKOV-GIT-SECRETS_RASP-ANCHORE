@@ -59,7 +59,7 @@ Assuming we have all the code and buildspec.yml files present in the CodeCommit/
 Below is the final Pipeline screenshot with all the stages included.
 
 ![](./images/AWS_DEVSECOPS_3.png)
-![](A./images/WS_DEVSECOPS_4.png)
+![](./images/WS_DEVSECOPS_4.png)
 ![](./images/AWS_DEVSECOPS_5.png)
 ![](./images/AWS_DEVSECOPS_6.png)
 
@@ -115,7 +115,7 @@ artifacts:
  ```
  
  
- ## Hado-Checkov stage:
+ ## Hadolint -Checkov stage:
  Checkov is a static code analysis tool for scanning infrastructure as code (IaC) files for misconfigurations that may lead to security or compliance problems. Checkov scans these IaC file types: Terraform (for AWS, GCP, Azure and OCI),CloudFormation (including AWS SAM),Azure Resource Manager (ARM),Serverless framework,Helm charts,Kubernetes,Docker.
 
 
