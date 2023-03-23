@@ -11,7 +11,9 @@ DevOps is a combination of cultural philosophies, practices, and tools that comb
 
 
 ## Security Vulnerability Scanning Stages
+
 To identify security vulnerabilities at various stages, organisations can integrate various tools and services (cloud and third-party) into their DevSecOps pipelines. 
+
 1.Secret Analysis
 Secrets Scanning refers to the process of identifying secrets embedded in code repositories . Some examples of secrets scanning tools are — Git-secrets, Trufflehog, detect-secrets.
 
