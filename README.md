@@ -1,11 +1,12 @@
-# This is a personal project on DevSecOps pipeline setup in AWS
+# Personal project on DevSecOps pipeline setup in AWS
+
 ##m below architecture has all the tools used for this project . I am are going to build the below CI/CD Pipeline in AWS by using AWS native developer tools such as AWS CodePipeline, AWS CodeBuild.
 
-![](https://miro.medium.com/v2/resize:fit:1400/0*osRRf2FePgqO3zha)
+![](./images/AWS_DEVSECOPS_1.png)
 
-What is DevSecOps?
+Before This as a breif description about What is DevSecOps?
 DevOps is a combination of cultural philosophies, practices, and tools that combine software development with information technology operations. These combined practices enable companies to deliver new application features and improved services to customers at a higher velocity.
-![](https://miro.medium.com/v2/resize:fit:1400/0*Bn7hoK0RR_Ef9iqx)
+![](./images/AWS_DEV_2.png)
 
 
 Security Vulnerability Scanning Stages
