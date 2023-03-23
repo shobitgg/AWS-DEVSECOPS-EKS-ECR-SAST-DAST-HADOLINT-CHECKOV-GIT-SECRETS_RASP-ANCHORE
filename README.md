@@ -58,17 +58,17 @@ Assuming we have all the code and buildspec.yml files present in the CodeCommit/
 ## AWS CODEPIPELINE:
 Below is the final Pipeline screenshot with all the stages included.
 
-![](AWS_DEVSECOPS_3.png)
-![](AWS_DEVSECOPS_4.png)
-![](AWS_DEVSECOPS_5.png)
-![](AWS_DEVSECOPS_6.png)
+![](./images/AWS_DEVSECOPS_3.png)
+![](A./images/WS_DEVSECOPS_4.png)
+![](./images/AWS_DEVSECOPS_5.png)
+![](./images/AWS_DEVSECOPS_6.png)
 
 To trigger the pipeline, commit changes to your Github repository. That generates a CloudWatch event and triggers the pipeline. CodeBuild scans the code and if there are any vulnerabilities, it invokes the Lambda function to parse and post the results to Security Hub.
 
 ## Git-Secrets-Check stage:
 In the pipeline the second stage is Git Secrets Check, where the Github repository is scanned by the git-secrets tool. It will scan the whole repository and find any sensitive information such as credentials in the repository then Codebuild fails. If there is no sensitive information then the build succeeds.
 
-![](AWS_DEVSECOPS_7.png)
+![](./images/AWS_DEVSECOPS_7.png)
 
 ```
 #  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -115,7 +115,7 @@ artifacts:
  ```
  
  
- Hado-Checkov stage:
+ ## Hado-Checkov stage:
  Checkov is a static code analysis tool for scanning infrastructure as code (IaC) files for misconfigurations that may lead to security or compliance problems. Checkov scans these IaC file types: Terraform (for AWS, GCP, Azure and OCI),CloudFormation (including AWS SAM),Azure Resource Manager (ARM),Serverless framework,Helm charts,Kubernetes,Docker.
 
 
@@ -166,7 +166,7 @@ phases:
  ```
  
  
- - SAST-Anchore stage:
+ ## SAST-Anchore stage:
  
  In this stage the Dockerfile will be built and scanned by Anchore tool to find if any vulnerabilities are present in the Docker Image. Anchore tool will save the vulnerability results in json format file and using Lambda function the contents of the file will be uploaded to SecurityHub where we can find the High, Medium and Low vulnerabilities with all the details, then the docker image will be uploaded to ECR repository. These reports will be helpful to the Development team to remediate the vulnerabilities.
  
@@ -233,7 +233,7 @@ artifacts:
 
 In the next step we have to deploy the ECR image into an EKS cluster and perform the DAST on the deployed application and RASP scan on the EKS cluster for finding the vulnerabilities.
 
-EKS-Deployment Stage:
+## EKS-Deployment Stage:
 In this stage the Image from ECR repository will be deployed into the EKS cluster along with the service creation using the manifest files which we have stored in the Github repo. A load balancer will get created and displayed in the output. Copy the URL and test in the browser to find whether the application is deployed properly in the EKS cluster. The application which we deployed runs on port 80. Below is the code snippet for the deployment and the output of the deployment from CodeBuild.
 ```
 
@@ -286,7 +286,7 @@ phases:
 
 ```
 
-OWASP-DAST Scan Stage:
+## OWASP-DAST Scan Stage:
 In this stage the OWASP ZAP tool will take the load balancer url(from previous stage) which we give as input and scan the url for any vulnerabilities and generate a json format output file and the lambda function will send the content from the file to AWS SecurityHub. Development team can find the vulnerability reports in the SecurityHub and remediate them as required.
 
 If this tool finds any warnings or fails then the CodeBuild job will fail showing the detected warnings or fails. If the warning code is not a vulnerability then we can ignore that code in one configuration file and pass that file as an argument to the OWASP ZAP scan command. We are using baseline zap scan for this setup. All the output files will be stored in S3 bucket.
@@ -342,7 +342,7 @@ artifacts:
   type: zip
   files: '**/*'
   
-Falco-RASP Stage:
+## Falco-RASP Stage:
 This is the final stage of the pipeline where we install the Falco tool in the EKS cluster. Falco is the Cloud-Native Runtime security project. It is the k8s threat detection engine. Falco makes use of syscalls which is the core part. Falco parses the syscalls that happen between Application and Kernel. It checks against the rules which are defined and alerts on the rules violation.
 
 We have used helm charts to install the Falco in the cluster. It is installed as a deployment in the cluster along with fluent bit. An AWS CloudWatch log group will be created and all the alerts will be stored in the CloudWatch logs.
@@ -392,6 +392,6 @@ phases:
 
 ```
 
-Conclusion
+## Conclusion
 we have implemented a DevSecOps pipeline that includes CI/CD, continuous testing, continuous logging and monitoring, auditing and governance, and operations. We have seen how to integrate various open-source scanning tools, such as HadoLint, Checkov, Anchore and OWASP Zap for SAST and DAST analysis, Falco for RASP.
 https://blog.searce.com/devsecops-in-aws-using-different-security-tools-part-iii-89b71730a358
