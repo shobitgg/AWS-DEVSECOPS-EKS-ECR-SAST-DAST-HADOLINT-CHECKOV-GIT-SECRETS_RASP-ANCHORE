@@ -52,17 +52,23 @@ Falco — Runtime Application Self Protection — RASP
 4. AWS Config and Security Hub enabled.
 5. Basic Knowledge on AWS developer services such as CodePipeline, CodeBuild, CodeCommit, EKS, Lambda and ECR.
 
+Assuming we have all the code and buildspec.yml files present in the CodeCommit/github repository and an eks cluster configured with node groups.
+
 
 ## AWS CODEPIPELINE:
+Below is the final Pipeline screenshot with all the stages included.
 
-![]()
+![](AWS_DEVSECOPS_3.png)
+![](AWS_DEVSECOPS_4.png)
+![](AWS_DEVSECOPS_5.png)
+![](AWS_DEVSECOPS_6.png)
 
 To trigger the pipeline, commit changes to your Github repository. That generates a CloudWatch event and triggers the pipeline. CodeBuild scans the code and if there are any vulnerabilities, it invokes the Lambda function to parse and post the results to Security Hub.
 
-Git-Secrets-Check stage:
+## Git-Secrets-Check stage:
 In the pipeline the second stage is Git Secrets Check, where the Github repository is scanned by the git-secrets tool. It will scan the whole repository and find any sensitive information such as credentials in the repository then Codebuild fails. If there is no sensitive information then the build succeeds.
 
-![]()
+![](AWS_DEVSECOPS_7.png)
 
 ```
 #  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
