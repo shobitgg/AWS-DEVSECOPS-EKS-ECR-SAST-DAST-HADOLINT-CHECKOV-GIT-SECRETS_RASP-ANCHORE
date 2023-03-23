@@ -341,7 +341,8 @@ phases:
 artifacts:
   type: zip
   files: '**/*'
-  
+```
+
 ## Falco-RASP Stage:
 This is the final stage of the pipeline where we install the Falco tool in the EKS cluster. Falco is the Cloud-Native Runtime security project. It is the k8s threat detection engine. Falco makes use of syscalls which is the core part. Falco parses the syscalls that happen between Application and Kernel. It checks against the rules which are defined and alerts on the rules violation.
 
