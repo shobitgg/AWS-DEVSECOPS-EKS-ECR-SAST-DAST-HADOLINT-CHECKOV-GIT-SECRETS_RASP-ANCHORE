@@ -22,14 +22,13 @@ Secrets Scanning refers to the process of identifying secrets embedded in code r
 Static code analysis, also known as static code review, is the process of detecting bad coding style, potential vulnerabilities, and security flaws in a software’s source code without actually running it . Some examples of SCA/SAST are Trivy or Sync or Anchor or CoreOS Clair.
 
 3.DAST (Dynamic Application Security Testing)
-
 DAST scanners are a good first step in turning DevOps into DevSecOps. They make it less frustrating for developers to deal with vulnerability scanning and easier for them to understand the security risk. DAST ranks vulnerabilities, given the context, into three categories: High, Medium, and Low and DAST scanners can be seamlessly integrated into your CI/CD pipeline.
-
 Some of the good DAST tools available in the market are OWASP ZAP, Crash test Security, Arachni.
+
 4. RASP
 RASP is a technology that runs on a server and kicks in when an application runs. It’s designed to detect attacks on an application in real time. When an application begins to run, RASP can protect it from malicious input or behaviour by analysing both the app’s behaviour and the context of that behaviou
 
-## DevSecOps tool stack]
+## DevSecOps tool stack
 
 Below tool stack has been used for the EKS deployment process in AWS.
 
@@ -46,12 +45,12 @@ OWASP ZAP — Dynamic Application Security test — DAST
 Falco — Runtime Application Self Protection — RASP
 
 
-Prerequisites:
-An AWS account with proper IAM roles and policies attached.
-An EKS cluster with a minimum number of nodes.
-A CodeCommit/github repo with your application code.
-AWS Config and Security Hub enabled.
-Basic Knowledge on AWS developer services such as CodePipeline, CodeBuild, CodeCommit, EKS, Lambda and ECR.
+## Prerequisites:
+1. An AWS account with proper IAM roles and policies attached.
+2. An EKS cluster with a minimum number of nodes.
+3. A CodeCommit/github repo with your application code.
+4. AWS Config and Security Hub enabled.
+5. Basic Knowledge on AWS developer services such as CodePipeline, CodeBuild, CodeCommit, EKS, Lambda and ECR.
 
 
 ## AWS CODEPIPELINE:
