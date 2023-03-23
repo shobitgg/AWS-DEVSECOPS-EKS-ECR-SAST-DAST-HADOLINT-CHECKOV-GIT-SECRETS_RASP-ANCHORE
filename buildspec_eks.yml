@@ -1,0 +1,45 @@
+version: 0.2
+run-as: root
+
+phases:
+
+  install:
+    commands:
+      - echo Installing app dependencies and Kubectl tool for K8s...
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl   
+      - chmod +x ./kubectl
+      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - source ~/.bashrc
+      - echo 'Check kubectl version'
+      - kubectl version --short --client
+      #- chmod +x eks_cicd/prereqs.sh
+      #- sh eks_cicd/prereqs.sh
+
+  pre_build:
+    commands:
+      - echo Logging into Amazon EKS...
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $AWS_CLUSTER_NAME
+      - echo check config 
+      - kubectl config view --minify
+      - echo check kubectl access
+      - kubectl get svc
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+      - echo $REPOSITORY_URI
+
+  build:
+    commands:
+      - echo Build started on `date`
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Apply the K8s manifest files using the latest image to cluster..!
+      - kubectl apply -f eks_files/deployment.yaml
+      - kubectl apply -f eks_files/service.yaml
+      - kubectl -n service rollout restart deployment devsecops-searce-deployment -n devsecops-searce
+      - sleep 10
+      - kubectl get pods -n devsecops-searce
+      - kubectl get svc -n devsecops-searce

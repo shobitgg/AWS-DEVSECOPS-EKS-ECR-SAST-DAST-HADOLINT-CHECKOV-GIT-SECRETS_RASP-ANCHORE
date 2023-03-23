@@ -1,0 +1,39 @@
+version: 0.2
+run-as: root
+
+phases:
+
+  install:
+    commands:
+      - echo Installing app dependencies and Kubectl tool for K8s...
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl   
+      - chmod +x ./kubectl
+      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - source ~/.bashrc
+      - echo 'Check kubectl version'
+      - kubectl version --short --client
+      - echo Downloading the Hadolint tool...
+      - wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
+      - cp hadolint /bin
+      - chmod +x /bin/hadolint
+      - /bin/hadolint --version
+      - echo Installing Checkov:static code analysis tool for scanning infrastructure as code files for misconfigurations...!! 
+      - curl https://bootstrap.pypa.io/get-pip.py | python3
+      - pip3 install checkov
+      - checkov --version 
+
+  pre_build:
+    commands:
+      - echo Running Hadolint and Checkov tools on the Dockerfile
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Validating the Dockerfile using Hadolint tool...
+      - /bin/hadolint docker_files/Dockerfile
+      - echo Using Checkov tool for scanning the Dockerfile...
+      - checkov -f docker_files/Dockerfile
+
+  post_build:
+    commands:
+      - echo Build completed on `date`

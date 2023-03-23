@@ -1,0 +1,59 @@
+version: 0.2
+run-as: root
+
+phases:
+
+  install:
+    commands:
+      - echo Installing app dependencies and Kubectl tool for K8s...
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl   
+      - chmod +x ./kubectl
+      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - source ~/.bashrc
+      - echo 'Check kubectl version'
+      - kubectl version --short --client
+      - yum install -y awscli git python3
+      - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+      - chmod 700 get_helm.sh
+      - ./get_helm.sh
+      - wget https://github.com/aquasecurity/starboard/releases/download/v0.14.1/starboard_linux_x86_64.tar.gz
+      - tar -zxvf starboard_linux_x86_64.tar.gz
+      - cp starboard ~/bin/kubectl-starboard
+      - yum install docker -y
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+
+  pre_build:
+    commands:
+      - echo Logging into Amazon EKS...
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $AWS_CLUSTER_NAME
+      - echo check config 
+      - kubectl config view --minify
+      - echo check kubectl access
+      - kubectl get svc
+      - kubectl starboard init
+
+  build:
+    commands:
+      - echo Build started on `date`
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Applying make command to the cluster..!
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/crd/vulnerabilityreports.crd.yaml
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/crd/configauditreports.crd.yaml 
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/crd/clusterconfigauditreports.crd.yaml 
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/crd/ciskubebenchreports.crd.yaml
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/static/01-starboard-operator.ns.yaml 
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/static/02-starboard-operator.rbac.yaml
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/static/03-starboard-operator.config.yaml
+      - kubectl describe cm starboard starboard-trivy-config starboard-polaris-config -n starboard-system
+      - kubectl apply -f https://raw.githubusercontent.com/aquasecurity/starboard/v0.14.1/deploy/static/04-starboard-operator.deployment.yaml
+      - kubectl get deployment -n starboard-system
+      - kubectl get deployment --all-namespaces
+      - kubectl-starboard scan vulnerabilityreports deployment/cicd-devsecops-deployment -n devsecops-searce
+      - kubectl-starboard get vulnerabilityreports deployment/cicd-devsecops-deployment -o yaml -n devsecops-searce
+      #- kubectl starboard scan vulnerabilityreports deployment/nginx 
+     # - kubectl starboard get vulnerabilityreports deployment/nginx -o yaml

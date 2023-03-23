@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devsecops-searce
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: devsecops-searce
+    app.kubernetes.io/instance: devsecops-searce-instance
+    app.kubernetes.io/version: '1.0.0'
+    app.kubernetes.io/managed-by: kubectl
+  name: devsecops-searce-deployment
+  namespace: devsecops-searce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devsecops-searce
+  template:
+    metadata:
+      labels:
+        app: devsecops-searce
+    spec:
+      containers:
+        - image: XXXXXXXXXX.dkr.ecr.ap-south-1.amazonaws.com/searce-devsecops:latest
+          imagePullPolicy: Always
+          name: devsecops-searce
+          ports:
+            - containerPort: 3000

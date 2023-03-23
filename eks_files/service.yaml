@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: devsecops-searce
+    app.kubernetes.io/instance: devsecops-searce-instance
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/managed-by: kubectl
+  name: devsecops-searce
+  namespace: devsecops-searce
+spec:
+  selector:
+    app: devsecops-searce
+  type: LoadBalancer
+  ports:
+   -  protocol: TCP
+      port: 80
+      targetPort: 3000
