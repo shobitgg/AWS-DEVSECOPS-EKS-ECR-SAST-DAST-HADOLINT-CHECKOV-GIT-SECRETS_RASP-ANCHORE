@@ -395,4 +395,4 @@ phases:
 
 ## Conclusion
 we have implemented a DevSecOps pipeline that includes CI/CD, continuous testing, continuous logging and monitoring, auditing and governance, and operations. We have seen how to integrate various open-source scanning tools, such as HadoLint, Checkov, Anchore and OWASP Zap for SAST and DAST analysis, Falco for RASP.
-https://blog.searce.com/devsecops-in-aws-using-different-security-tools-part-iii-89b71730a358
+
