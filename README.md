@@ -1,4 +1,4 @@
-# AWS native DevSecOps pipeline 
+# AWS DevSecOps CI/CD with Secure Artifacts Code Signing
 
 ## For Code Signing Artifacts sub-project : Kindly check here [Github Link](https://github.com/shobitgg/Continuous_Security-Azure_Devops-AWS_Devops-Code_Signing_Docker_images-Azure_sign-SigStore_Cosign)
 ****
