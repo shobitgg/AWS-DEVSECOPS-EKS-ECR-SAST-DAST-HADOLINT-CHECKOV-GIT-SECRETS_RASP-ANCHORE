@@ -1,4 +1,4 @@
-# project on AWS DevSecOps pipeline 
+# AWS native DevSecOps pipeline 
 
 ## Below architecture has all the tools used for this project . 
 I am are going to build the below CI/CD Pipeline in AWS by using AWS native developer tools such as 
